@@ -1,0 +1,711 @@
+<head>
+  <title>Turkish Uni's American Football Database</title>
+<style type="text/css">
+    div{text-align:justify;font-family:Arial;margin:20px}
+    h1{text-align:center}
+	  h2, h3{text-align:center;margin-top:40px;font-style:italic}
+  	th,td{text-align:center}
+	  tr th{text-align:center}
+    #l1{text-align: left; margin-bottom:10px;font-style:italic}
+    hr{size: 5px; background-color: black;}
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 1200;
+      }
+    body{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #top_link{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      font-size: 30px;
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+    p{text-align: center}
+ 
+</style>
+</head>
+<body>
+  <h1 id="#TOP"><b>Turkish University's American Football League Database</b></h1>
+  <hr width=600 size="5" background-color="black">
+    <ol type="i" align="center" id="l1"> 
+      <li><a href="#def"><b><u>Problem Definition</u></b></a></li>
+      <li><a href="#design"><b>Design</b></a></li>
+      <ul><a href="#er"><b><u>ER Diagram</u></b></a></ul>
+      <ul><a href="#tab"><b><u>Tables</u></b></a></ul> 
+      <li><a href="#imp"><b>Implementation</b></a></li>
+      <ul><a href="#code"><b>Codes for creating tables<b></a></ul>
+      <ul><a href="#query"><b>Questions&Answers&Outputs</a></a></ul>
+    </ol>
+  <h2 id=def align="center">Problem Definition</h2>
+  <p>This project aims to create a database for use in the American football league playoffs in Turkish College League. The database will be designed to encompass not only information about university football teams such as stadium, sponsor, and coach details but also player information, statistics, match results, and important data related to match referees. The goal of this project is to establish a foundation for more effective team management, statistical analysis, and overall league performance evaluation in the American college football league. The ultimate objective is to present this information to the public.</p>
+  <ul>
+    <li><b>Entities</b></li>
+      <ul>
+      <li>Players</li>
+      <li>Teams</li>
+      <li>Coaches</li>
+      <li>Matches</li>
+      <li>Stadiums</li>
+      <li>Referees</li>
+      <li>Sponsors</li>
+      </ul>
+  </ul>
+  <ul>
+    <li><b>Relations, Properties & Attributes</b></li>
+    <ul>
+      <li>Primary key for the players’ table is PLAYER_ID. The player table has two relations, one of them is with Matches table and the relation is plays, and the other one is participation relation with teams table. A player can play in multiple matches, and a match can be played by multiple players (many-to-many). Every match must have a player (Total Participation). For Participate relations Each team has multiple players, and each player belongs to a team (one-to-many relation) (Total participation).</li>
+      <li>The Matches table’s primary key is MATCH_ID. The Matches table has 4 relationships. Three of them are plays. A team can play in multiple matches, and a match can be played by multiple teams (many-to-many). Every match must have a team (Total Participation). And this is valid within the stadium table. The fourth relationship is the Takes_Charge relation. A referee can officiate multiple matches, and a match can be managed by one referee(one-to-many). Each match must have a referee, but a referee is not required to manage a specific match (Total Participation).  </li>
+      <li>  third table is stadium table. The primary key for this table is STADIUM_ID. And it has belongs relation between teams table and one-to-one relationships because each team has one stadium and each stadium belongs to a team (Total Participation). For Referee table REFEREE_ID is the primary key. </li>
+      <li>Our Teams table has 4 relationship and we already discovered belongs and plays relationships. The other two relationships are Manages and Supports relationships. A team can have multiple sponsors, and a sponsor can sponsor multiple teams. (many-to-many). For the Manages relationship every team must have a coach, and each coach can manage a team(one-to-one). Our sponsors table primary key is SPONSOR_ID. Our last but not least table is Coaches table. For this table primary key is COACH_ID.</li>
+    </ul>
+  </ul>
+
+
+  <hr size="5" background-color="black">  
+  <h2 id="design">DESIGN</h2>
+  <h3 id=er align="center">ER Diagram</h3>
+
+
+  <img align="center" src="ER.png" alt="ER Diagram" class="center">
+  <hr size="5" background-color="black">
+
+  <h3 id=tab align="center">Tables</h3>
+  <p>We have 88 rows of data in Players table but we only show 4 of them
+    for the sake of representation.<b> In the other tables we show all of the
+      datas.
+  </p>
+<table border=1 align=center>
+<tr><th colspan="9">PLAYERS</th></tr><tr><th>PLAYER_ID</th><th>NAME</th><th>SURNAME</th><th>BIRTHDAY</th><th>SCHOLARSHIP</th><th>POSITION</th><th>UNIVERSITY</th><th>MINUTES</th><th> TEAM_ID </th></tr>
+<tr><td>1002</td><td>Arda</td><td>Özkan</td><td>09.12.1998</td><td>0</td><td>RB</td><td>Yeditepe University</td><td>52</td><td>1</td></tr>
+<tr><td>1023</td><td>Ahmet</td><td>Gümüş</td><td>12.09.2005</td><td>100</td><td>QB</td><td>Mersin University</td><td>36</td><td>2</td></tr><tr><td>1045</td><td>Erkan</td><td>Arıkan</td><td>11.20.2000</td><td>0</td><td>QB</td><td>Ege University</td><td>47</td><td>3</td></tr><tr><td>1068</td><td>Ercan</td><td>Yavuz</td><td>08.10.2001</td><td>50</td><td>B</td><td>Özyeğin University</td><td>0</td><td>4</td></tr>
+
+  
+</table>
+<br>	
+<table border=1 align=center>
+<tr><th colspan="7">TEAMS</th></tr><tr><th>TEAM_ID</th><th>TEAM_NAME</th><th>UNIVERSITY</th><th>SPONSOR_ID</th><th>BUDGET</th><th>WINS</th><th>STADIUM_ID</th></tr><tr><td>1</td><td>Yeditepe Eagles</<td><td>Yeditepe University</td><td>70</td><td>121.000</td><td>4</td><td>40</td></tr><tr><td>4</td><td>Özyeğin Wolves</<td><td>Özyeğin University</td><td>73</td><td>156.000</td><td>5</td><td>43</td></tr><tr><td>2</td><td>Mersin Mustangs</<td><td>Mersin University</td><td>71</td><td>68000</td><td>3</td><td>42</td></tr> <tr><td>3</td><td>Ege Dolphins</<td><td>Ege University</td><td>72</td><td>156.000</td><td>3</td><td>41</td></tr>       
+
+  
+</table>
+<br>
+<table border=1 align=center>
+	<tr><th colspan="6">COACHES</th></tr>
+	<tr><th>COACH_ID</th><th>NAME</th><th>SURNAME</th><th>COUNTRY</th><th>BIRTHDAY</th><th>TEAM_ID</th></tr>
+	<tr><td>30<td>Onur</td><td>Durak</td><td>Turkey</td><td>12.31.1989</td><td>1</td></tr><tr><td>31<td>Uluç</td><td>Sergün</td><td>Turkey</td><td>06.03.1986</td><td>2</td></tr><tr><td>32<td>Gabe</td><td>Fendly</td><td>USA</td><td>11.13.1965</td><td>3</td></tr><tr><td>33<td>Casey</td><td>Crosby</td><td>USA</td><td>11.13.1965</td><td>4</td></tr>
+	
+	
+</table>
+<br>
+<table border=1 align=center>
+<tr><th colspan="5">MATCHES</th></tr><tr><th>MATCH_ID</th><th>MATCH_SCORE</th><th>MATCH_WINNER</th><th>STADIUM_ID</th><th>REF_ID</th></tr><tr><td>20</td><td>27-26</td><td>1</td><td>42</td><td>50<tr><td>21</td><td>33-15</td><td>2</td><td>41</td><td>51<tr><td>22</td><td>20-13</td><td>2</td><td>43</td><td>52<tr><td>23</td><td>24-16</td><td>4</td><td>40</td><td>53
+
+</table>
+<table border=1 align=center>
+<tr><th colspan="4">STADIUM</th></tr><tr><th>STADIUM_ID</th><th>CAPACITY</th><th>LOCATION</th><th>TEAM_ID</th></tr><tr><td>40<td>2500</td><td>İstanbul</td><td>1</td></tr><tr><td>41<td>1000</td><td>İzmir</td><td>3</td></tr><tr><td>42<td>4000</td><td>Mersin</td><td>2</td></tr><tr><td>43<td>10000</td><td>İstanbul</td><td>4</td></tr>
+
+
+  
+</table>
+<br>
+<table border=1 align=center>
+<tr><th colspan="3">SPONSORS</th></tr><tr><th>SPONSOR_ID</th><th>SPONSOR_NAME</th><th>BUDGET</th> </tr><tr><td>70</td><td>Başak Gıda</td><td>23000</td></tr><tr><td>71</td><td>Ciğerci Bahattin</td><td>12000</td></tr><tr><td>72</td><td>Performist</td><td>16000</td></tr><tr><td>73</td><td>Fiba banka</td><td>35000</td></tr>
+
+ 
+</table>
+<br>
+<table border=1 align=center>
+	<tr><th colspan="4">REFEREES</th></tr>
+	<tr><th>REFEREE_ID</th><th>NAME</th><th>SURNAME</th><th>BIRTHDAY</th></tr><tr><td>50</td><td>BEGÜM</td><td>ATILAN</td><td>12.10.1970</td><tr><td>51</td><td>KEREM</td><td>KOÇ</td><td>06.19.1985</td><tr><td>52</td><td>NAMIK</td><td>ARSLAN</td><td>02.26.1982</td><tr><td>53</td><td>UMUT</td><td>ÇANTACI</td><td>01.04.1977</td></tr><td>54</td><td>SELİM</td><td>PAMUK</td><td>10.22.1980</td></tr>
+</table>
+<br>
+<hr size="5" background-color="black">
+<br>
+
+<h2 id="imp">IMPLEMENTATION</h2>
+<h3 id="code">Table Creations Codes</h3>
+<br>
+<p align="center">CREATE TABLE PLAYERS ( <br>
+  PLAYER_ID CHAR(4) NOT NULL, <br>
+  PLAYER_NAME VARCHAR(30) NOT NULL, <br>
+  PLAYER_SURNAME VARCHAR(30) NOT NULL, <br>
+  BIRTHDAY DATETIME NOT NULL, <br>
+  SCHOLARSHIP INTEGER, <br>
+  POSITION CHAR(2) NOT NULL, <br>
+  UNIVERSITY VARCHAR(50) NOT NULL, <br>
+  MINUTES_ INTEGER, <br>
+  TEAM_ID VARCHAR(2) NOT NULL, <br>
+  PRIMARY KEY(PLAYER_ID) 
+) <br>
+<br>
+
+
+CREATE TABLE COACHES ( <br>
+  COACH_ID CHAR(3) NOT NULL, <br>
+  COACH_NAME VARCHAR(30) NOT NULL, <br>
+  COACH_SURNAME VARCHAR(30) NOT NULL, <br>
+  COUNTRY VARCHAR(30) NOT NULL, <br>
+  BIRTHDAY DATETIME NOT NULL, <br>
+  TEAM_ID VARCHAR(2) NOT NULL, <br>
+  PRIMARY KEY(COACH_ID)
+)<br>
+<br>
+
+
+CREATE TABLE TEAMS ( <br>
+  TEAM_ID CHAR(2) NOT NULL, <br>
+  TEAM_NAME VARCHAR(50) NOT NULL, <br>
+  UNIVERSITY VARCHAR(50) NOT NULL, <br>
+  SPONSOR_ID CHAR(2) NOT NULL, <br>
+  BUDGET MONEY, <br>
+  WINS CHAR(2) NOT NULL, <br>
+  STADIUM_ID CHAR(2) NOT NULL, <br>
+  PRIMARY KEY(TEAM_ID) 
+)<br>
+<br>
+CREATE TABLE SPONSORS ( <br>
+  SPONSOR_ID CHAR(2) NOT NULL,<br>
+  SPONSOR_NAME VARCHAR(50),<br>
+  BUDGET MONEY,<br>
+  PRIMARY KEY(SPONSOR_ID)
+)<br>
+<br>
+CREATE TABLE STADIUMS(<br>
+  STADIUM_ID CHAR(2) NOT NULL,<br>
+  CAPACITY INTEGER,<br>
+  LOCATION_ VARCHAR(30),<br>
+  TEAM_ID CHAR(2) NOT NULL,<br>
+  PRIMARY KEY(STADIUM_ID)
+)<br>
+<br>
+CREATE TABLE MATCHES(<br>
+  MATCH_ID CHAR(3) NOT NULL,<br>
+  MATCH_SCORE	VARCHAR(10) NOT NULL,<br>
+  MATCH_WINNER_TEAM_ID CHAR(2) NOT NULL,<br>
+  MATCH_STD_ID CHAR(2) NOT NULL,<br>
+  REFEREE_ID CHAR(2) NOT NULL,<br>
+  PRIMARY KEY(MATCH_ID)
+)<br>
+<br>
+CREATE TABLE REFEREES(<br>
+  REFEREE_ID CHAR(2) NOT NULL,<br>
+  REFEREE_NAME CHAR(30) NOT NULL,<br>
+  REFEREE_SURNAME CHAR(30) NOT NULL,<br>
+  BIRTHDAY DATETIME NOT NULL,<br>
+  PRIMARY KEY(REFEREE_ID)
+)<br>
+<br>
+</p>
+
+<h3>Data Entry Codes</h3>
+<p align=center> 
+INSERT INTO PLAYERS VALUES('1001','Umut','Piranlıoğlu','07.05.2000','50','QB','Yeditepe University','22','1');<br>
+INSERT INTO PLAYERS VALUES('1003','Kaan','Sarul','04.23.2003','100','RB','Yeditepe University','58','1');<br>
+INSERT INTO PLAYERS VALUES('1002','Arda','Özkan','09.12.1998','0','RB','Yeditepe University','52','1');<br> 
+INSERT INTO PLAYERS VALUES('1004','İrfan','Kılınç','11.08.2001','100','WR','Yeditepe University','30','1');<br>
+INSERT INTO PLAYERS VALUES('1005','Umut Ekin','Doğan','01.30.1999','50','OL','Yeditepe University','35','1');<br>
+INSERT INTO PLAYERS VALUES('1006','Doğuhan','Aslan','06.17.2004','0','OL','Yeditepe University','3','1');<br>
+INSERT INTO PLAYERS VALUES('1007','Sami','Karabıyık','03.19.2002','0','OL','Yeditepe University','7','1');<br>
+INSERT INTO PLAYERS VALUES('1008','Oğuz','Şekli','08.28.1998','0','OL','Yeditepe University','56','1');<br>
+INSERT INTO PLAYERS VALUES('1009','Ege','Acar','12.14.2005','0','OL','Yeditepe University','40','1');<br>
+INSERT INTO PLAYERS VALUES('1010','Baran','Kara','10.02.2003','0','DL','Yeditepe University','37','1');<br>
+INSERT INTO PLAYERS VALUES('1011','Ziya','Gülal','05.20.2001','25','DL','Yeditepe University','6','1');<br>
+INSERT INTO PLAYERS VALUES('1012','Oğuzhan','Çubuk','02.07.2004','50','DL','Yeditepe University','28','1');<br>
+INSERT INTO PLAYERS VALUES('1013','Emre','Özbatır','09.11.2000','100','DL','Yeditepe University','10','1');<br>
+INSERT INTO PLAYERS VALUES('1014','Alper','Pamukçuoğlu','07.26.2002','100','LB','Yeditepe University','54','1');<br>
+INSERT INTO PLAYERS VALUES('1015','Yağız','Sayar','04.03.2005','50','LB','Yeditepe University','56','1');<br>
+INSERT INTO PLAYERS VALUES('1016','Berke','Demir','11.29.1998','50','LB','Yeditepe University','26','1');<br>
+INSERT INTO PLAYERS VALUES('1017','Uygar','Bolat','03.15.2003','0','CB','Yeditepe University','38','1');<br>
+INSERT INTO PLAYERS VALUES('1018','Diyar','İnce','06.22.2004','0','CB','Yeditepe University','4','1');<br>
+INSERT INTO PLAYERS VALUES('1019','Paşa','Atılan','01.06.1999','0','CB','Yeditepe University','30','1');<br>
+INSERT INTO PLAYERS VALUES('1020','Görkem','Şen','10.18.2001','0','CB','Yeditepe University','6','1');<br>
+INSERT INTO PLAYERS VALUES('1021','Alp','Taş','08.05.2002','25','WR','Yeditepe University','29','1');<br>
+INSERT INTO PLAYERS VALUES('1022','Egehan','Erdoğan','05.13.2000','25','SF','Yeditepe University','33','1');<br>
+INSERT INTO PLAYERS VALUES('1023','Ahmet','Gümüş','12.09.2005','100','QB','Mersin University','36','1');<br>
+INSERT INTO PLAYERS VALUES('1024','Mehmet','Aydın','02.24.2003','100','RB','Mersin University','15','2');<br>
+INSERT INTO PLAYERS VALUES('1025','Mustafa','Demir','07.01.2001','50','WR','Mersin University','6','2');<br>
+INSERT INTO PLAYERS VALUES('1026','Ali','Şahin','04.08.2004','50','QB','Mersin University','39','2');<br>
+INSERT INTO PLAYERS VALUES('1027','Emre','Aksoy','09.16.1998','25','OL','Mersin University','18','2');<br>
+INSERT INTO PLAYERS VALUES('1028','Cem','Gür','11.27.2002','25','OL','Mersin University','60','2');<br>
+INSERT INTO PLAYERS VALUES('1029','Kerem','Öztürk','06.14.2005','25','OL','Mersin University','41','2');<br>
+INSERT INTO PLAYERS VALUES('1030','Baış','Yüksel','03.21.2000','0','OL','Mersin University','58','2');<br>
+INSERT INTO PLAYERS VALUES('1031','Can','Çetin','10.04.2004','0','CB','Mersin University','27','2');<br>
+INSERT INTO PLAYERS VALUES('1032','Burak','Arslan','07.19.1999','0','DL','Mersin University','53','2');<br>
+INSERT INTO PLAYERS VALUES('1033','Kaan','Karahan','02.09.2003','100','DL','Mersin University','34','2');<br>
+INSERT INTO PLAYERS VALUES('1034','Serkan','Kaya','05.26.2001','100','DL','Mersin University','22','2');<br>
+INSERT INTO PLAYERS VALUES('1035','Onur','Tekin','12.02.2005','50','DL','Mersin University','46','2');<br>
+INSERT INTO PLAYERS VALUES('1036','Eren','Yıldırım','08.11.2000','50','LB','Mersin University','42','2');<br>
+INSERT INTO PLAYERS VALUES('1037','Koray','Korkmaz','04.18.2002','50','LB','Mersin University','11','2');<br>
+INSERT INTO PLAYERS VALUES('1038','Mert','Atalay','10.23.1998','50','LB','Mersin University','18','2');<br>
+INSERT INTO PLAYERS VALUES('1039','Selim','Doğan','03.01.2004','25','CB','Mersin University','8','2');<br>
+INSERT INTO PLAYERS VALUES('1040','Volkan','Gültekin','06.15.2003','25','CB','Mersin University','47','2');<br>
+INSERT INTO PLAYERS VALUES('1041','Taylan','Taşkın','01.05.2001','50','CB','Mersin University','54','2');<br>
+INSERT INTO PLAYERS VALUES('1042','Hakan','Koçak','09.12.2004','100','CB','Mersin University','25','2');<br>
+INSERT INTO PLAYERS VALUES('1043','Berkay','Özdemir','07.30.1999','100','WR','Mersin University','12','2');<br>
+INSERT INTO PLAYERS VALUES('1044','Deniz','Yıldız','04.07.2002','100','SF','Mersin University','42','2');<br>
+INSERT INTO PLAYERS VALUES('1045','Erkan','Arıkan','11.20.2000','0','QB','Ege University','47','3');<br>
+INSERT INTO PLAYERS VALUES('1046','Umut','Taşkın','06.27.2005','0','RB','Ege University','50','3');<br>
+INSERT INTO PLAYERS VALUES('1047','Furkan','Kocaman','03.14.1999','0','WR','Ege University','2','3');<br>
+INSERT INTO PLAYERS VALUES('1048','Oğuzhan','Ayhan','08.25.2003','25','WR','Ege University','57','3');<br>
+INSERT INTO PLAYERS VALUES('1049','Yusuf','Karakaş','05.02.2004','75','OL','Ege University','41','3');<br>
+INSERT INTO PLAYERS VALUES('1050','Levent','Gök','12.09.2001','75','OL','Ege University','50','3');<br>
+INSERT INTO PLAYERS VALUES('1051','Selçuk','Demirtaş','10.22.2002','75','OL','Ege University','38','3');<br>
+INSERT INTO PLAYERS VALUES('1052','Berk','Savaş','07.06.1998','50','OL','Ege University','49','3');<br>
+INSERT INTO PLAYERS VALUES('1053','Samet','Aksoy','01.18.2005','25','OL','Ege University','5','3');<br>
+INSERT INTO PLAYERS VALUES('1054','Engin','Akgün','04.03.2000','100','DL','Ege University','34','3');<br>
+INSERT INTO PLAYERS VALUES('1055','Uğur','Akın','11.10.2003','0','DL','Ege University','52','3');<br>
+INSERT INTO PLAYERS VALUES('1056','Mete','Şen','09.26.1998','0','DL','Ege University','33','3');<br>
+INSERT INTO PLAYERS VALUES('1057','Metin','Eren','05.08.2002','100','SF','Ege University','29','3');<br>
+INSERT INTO PLAYERS VALUES('1058','Oktay','Aksoy','12.16.2004','50','LB','Ege University','22','3');<br>
+INSERT INTO PLAYERS VALUES('1059','Arda','Çelik','08.29.1999','75','LB','Ege University','52','3');<br>
+INSERT INTO PLAYERS VALUES('1060','Ege','Güler','02.03.2001','25','LB','Ege University','22','3');<br>
+INSERT INTO PLAYERS VALUES('1061','Furkan','Gür','07.20.2003','50','LB','Ege University','4','3');<br>
+INSERT INTO PLAYERS VALUES('1062','Onurcan','Yavuz','10.06.1998','50','CB','Ege University','58','3');<br>
+INSERT INTO PLAYERS VALUES('1063','Alper','Kılıç','06.01.2004','50','CB','Ege University','32','3');<br>
+INSERT INTO PLAYERS VALUES('1064','Murat','Taşkın','03.14.2002','100','CB','Ege University','50','3');<br>
+INSERT INTO PLAYERS VALUES('1065','Gökhan','Duran','11.25.2000','0','WR','Ege University','58','3');<br>
+INSERT INTO PLAYERS VALUES('1066','Korhan','Erdoğan','09.07.2005','75','SF','Ege University','5','3');<br>
+INSERT INTO PLAYERS VALUES('1067','Erhan','Aslan','04.22.1999','100','QB','Özyeğin University ','2','4');<br>
+INSERT INTO PLAYERS VALUES('1068','Ercan','Yavuz','08.10.2001','50','B','Özyeğin University ','0','4');<br>
+INSERT INTO PLAYERS VALUES('1069','Cihan','Kılıç','05.04.2004','25','WR','Özyeğin University','32','4');<br>
+INSERT INTO PLAYERS VALUES('1070','Tuncay','Demirtaş','01.13.2003','0','WR','Özyeğin University','4','4');<br>
+INSERT INTO PLAYERS VALUES('1071','Tolga','Çelik','10.31.1998','0','OL','Özyeğin University','55','4');<br>
+INSERT INTO PLAYERS VALUES('1072','Hüseyin','Kocaman','07.17.2005','0','OL','Özyeğin University','30','4');<br>
+INSERT INTO PLAYERS VALUES('1073','Serhat','Taşkın','02.26.2000','50','OL','Özyeğin University','55','4');<br>
+INSERT INTO PLAYERS VALUES('1074','Caner','Çetin','06.09.2002','75','RB','Özyeğin University','55','4');<br>
+INSERT INTO PLAYERS VALUES('1075','Kaan','Akün','09.19.1999','100','OL','Özyeğin University','37','4');<br>
+INSERT INTO PLAYERS VALUES('1076','Emirhan','Yavuz','04.02.2003','100','DL','Özyeğin University','16','4');<br>
+INSERT INTO PLAYERS VALUES('1077','Halil','Gürsoy','11.11.2004','75','DL','Özyeğin University','46','4');<br>
+INSERT INTO PLAYERS VALUES('1078','Burahan','Şen','08.28.2001','25','DL','Özyeğin University','52','4');<br>
+INSERT INTO PLAYERS VALUES('1079','Ramazan','Taşkın','12.05.1998','0','OL','Özyeğin University','17','4');<br>
+INSERT INTO PLAYERS VALUES('1080','İbrahim','Güler','07.21.2000','100','LB','Özyeğin University','17','4');<br>
+INSERT INTO PLAYERS VALUES('1081','Fatih','Güneş','02.14.2005','25','LB','Özyeğin University','22','4');<br>
+INSERT INTO PLAYERS VALUES('1082','Yunus','Yalçın','05.08.1999','75','LB','Özyeğin University','8','4');<br>
+INSERT INTO PLAYERS VALUES('1083','Osman','Tuncer','03.23.2004','75','CB','Özyeğin University','50','4');<br>
+INSERT INTO PLAYERS VALUES('1084','Murat','Koçak','10.30.2001','0','WR','Özyeğin University','41','4');<br>
+INSERT INTO PLAYERS VALUES('1085','İsmail','Çakır','06.12.2003','0','CB','Özyeğin University','45','4');<br>
+INSERT INTO PLAYERS VALUES('1086','Abdullah','Çetin','01.25.2002','0','CB','Özyeğin University','13','4');<br>
+INSERT INTO PLAYERS VALUES('1087','Bilge','Yıldız','09.17.1998','25','WR','Özyeğin University','31','4');<br>
+INSERT INTO PLAYERS VALUES('1088','Selim','Güneş','07.04.2004','0','SF','Özyeğin University','16','4');<br>
+<br>
+
+
+ 
+
+ INSERT INTO TEAMS VALUES('1','Yeditepe Eagles','Yeditepe University','70','121000','4','40');<br>
+ INSERT INTO TEAMS VALUES('4','Özyeğin Wolves','Özyeğin University','73','156000','5','43');<br>
+ INSERT INTO TEAMS VALUES('2','Mersin Mustangs','Mersin University','71','68000','3','42');<br>
+ INSERT INTO TEAMS VALUES('3','Ege Dolphins','Ege University','72’,’84000','3','41');<br>
+ <br>
+ INSERT INTO COACHES VALUES('30','Onur','Durak','Turkey','12.31.1989','1');<br>
+ INSERT INTO COACHES VALUES('31','Uluç','Sergün','Turkey','06.03.1986','2');<br>
+ INSERT INTO COACHES VALUES('32','Gabe','Fendly','USA','08.24.1970','3');<br>
+ INSERT INTO COACHES VALUES('33','Casey','Crosby','USA','11.13.1965','4');<br>
+
+ <br>
+
+
+INSERT INTO SPONSORS VALUES('70','Başak Gıda','23000');<br>
+INSERT INTO SPONSORS VALUES('71','Ciğerci Bahattin','12000');<br>
+INSERT INTO SPONSORS VALUES('72','Performist','16000');<br>
+INSERT INTO SPONSORS VALUES('73','Fiba banka','35000');<br>
+
+<br>
+
+INSERT INTO STADIUMS VALUES('40','2500','İstanbul','1');<br>
+INSERT INTO STADIUMS VALUES('41','1000','İzmir','3');<br>
+INSERT INTO STADIUMS VALUES('42','4000','Mersin','2');<br>
+INSERT INTO STADIUMS VALUES('43','10000','İstanbul','4');<br>
+<br>
+
+
+INSERT INTO MATCHES VALUES('20','27-26','1','42','50');<br>
+INSERT INTO MATCHES VALUES('21','33-15','2','41','51');<br>
+INSERT INTO MATCHES VALUES('22','20-13','2','43','52');<br>
+INSERT INTO MATCHES VALUES('23','24-16','4','40','53');<br>
+<br>
+INSERT INTO REFEREES VALUES('50','BEGÜM','ATILAN','12.10.1970');<br>
+INSERT INTO REFEREES VALUES('51','KEREM','KOÇ','06.19.1985');<br>
+INSERT INTO REFEREES VALUES('52','NAMIK','ARSLAN','02.26.1982');<br>
+INSERT INTO REFEREES VALUES('53','UMUT','ÇANTACI','01.04.1977');<br>
+INSERT INTO REFEREES VALUES('54','SELİM','PAMUK','10.22.1980');<br>
+</p>
+<br>
+<hr size="5" background-color="black">
+<br>
+<h3 id="query">Query Questions & Answers</3>
+
+  <p>
+    <i>A query that applies a row and column selection to a
+      single table</i>
+      <br>
+
+  Q1) List names, surnames, and the contries of the coaches who is not from Turkey.
+      <br>
+  A) SELECT COACH_NAME, COACH_SURNAME, COUNTRY FROM COACHES<br> 
+  WHERE COUNTRY!='Turkey';<br>
+  <br>
+</p>
+
+<table border=1 align=center>
+  <tr><th>COACH_NAME</th><th>COACH_NAME</th><th>COACHES</th></tr>
+  <tr><td>Gabe</td><td>Fendly</td><td>USA</td></tr>
+  <tr><td>Casey</td><td>Crosby</td><td>USA</td></tr>
+</table>
+
+  <p>
+    <i>A query that takes join of two tables and does row and
+      column selection and ordering.</i>
+      <br>
+
+  Q2) List the Names, Budget and stadium's location of the teams who has a budget more than 80000.<br>
+  The list should be ordered with respect to team budgets in descending order.<br>
+  <br>
+
+  
+  A) SELECT T.TEAM_NAME, S.LOCATION_, T.BUDGET FROM TEAMS T, STADIUMS S<br>
+  WHERE T.STADIUM_ID=S.STADIUM_ID AND BUDGET>80000<br>
+  ORDER BY T.BUDGET DESC;<br>
+  <br>
+  <table border=1 align=center>
+   
+      <tr>
+        <th>TEAM_NAME</th>
+        <th>LOCATION</th>
+        <th>BUDGET</th>
+      </tr>
+    
+      <tr>
+        <td>Özyegin Wolves</td>
+        <td>Istanbul</td>
+        <td>156000</td>
+      </tr>
+      <tr>
+        <td>Yeditepe Eagles</td>
+        <td>Istanbul</td>
+        <td>121000</td>
+      </tr>
+      <tr>
+        <td>Ege Dolphins</td>
+        <td>Izmir</td>
+        <td>84000</td>
+      </tr>
+    
+  </table>
+</p>
+  <p>
+    <i>Repeat the previous task but this time your query
+      should take join of three tables</i>
+      <br>
+
+  Q3) List the Names, Budget, stadium's location and sponsors of the teams who has a budget more than 80000
+  and its sponsor budget should be more than 15000.
+  The list should be ordered with respect to team budgets in descending order.
+  <br>
+
+  A) SELECT T.TEAM_NAME, S.LOCATION_, T.BUDGET, P.SPONSOR_NAME FROM TEAMS T, STADIUMS S, SPONSORS P<br>
+  WHERE T.STADIUM_ID=S.STADIUM_ID AND T.SPONSOR_ID=P.SPONSOR_ID AND T.BUDGET>80000 AND P.BUDGET>15000<br>
+  ORDER BY T.BUDGET DESC;<br>
+  <table border=1 align=center>
+   
+    <tr>
+      <th>TEAM_NAME</th>
+      <th>LOCATION</th>
+      <th>BUDGET</th>
+      <th>SPONSOR_NAME</th>
+    </tr>
+  
+    <tr>
+      <td>Özyegin Wolves</td>
+      <td>Istanbul</td>
+      <td>156000</td>
+      <td>Fiba banka</td>
+    </tr>
+    <tr>
+      <td>Yeditepe Eagles</td>
+      <td>Istanbul</td>
+      <td>121000</td>
+      <td>Basak Gıda</td>
+    </tr>
+    <tr>
+      <td>Ege Dolphins</td>
+      <td>Izmir</td>
+      <td>84000</td>
+      <td>Performist</td>
+    </tr>
+  
+</table>
+</p>
+  <p>
+    <i>Write a query involving outer join and row selection.</i>
+    <br>
+
+  Q4) Retrieve the names and universities of all teams along with the sponsor names (if available)
+  from the "TEAMS" and "SPONSORS" tables. Include all teams, even those without sponsors.
+  For the sponsors who has a budget over than 10000
+  <br>
+
+  A) SELECT T.TEAM_NAME, T.UNIVERSITY, S.SPONSOR_NAME<br>
+  FROM TEAMS T<br>
+  LEFT OUTER JOIN SPONSORS S ON T.SPONSOR_ID = S.SPONSOR_ID<br>
+  WHERE S.BUDGET > 10000<br>
+  <table border=1 align=center>
+      <tr>
+        <th>TEAM_NAME</th>
+        <th>UNIVERSITY</th>
+        <th>SPONSOR_NAME</th>
+      </tr>
+
+      <tr>
+        <td>Yeditepe Eagles</td>
+        <td>Yeditepe University</td>
+        <td>Basak Gida</td>
+      </tr>
+      <tr>
+        <td>Mersin Mustangs</td>
+        <td>Mersin University</td>
+        <td>Cigerci Bahattin</td>
+      </tr>
+      <tr>
+        <td>Ege Dolphins</td>
+        <td>Ege University</td>
+        <td>Performist</td>
+      </tr>
+      <tr>
+        <td>Özyegin Wolves</td>
+        <td>Özyegin University</td>
+        <td>Fiba banka</td>
+      </tr>
+
+  </table>
+  
+</p>
+  <p>
+    <i>Write two queries involving summary functions and
+      row selection and join operations.</i>
+      <br>
+
+  Q5) list the total played time for all players in yeditepe university
+  <br>
+
+  A) SELECT SUM(P.MINUTES_) AS TotalMin<br>
+  FROM PLAYERS P, TEAMS T<br>
+  WHERE P.TEAM_ID=T.TEAM_ID AND T.TEAM_NAME LIKE 'Yeditepe%'<br>
+    <table border="2" align="center">
+    <tr><th>TotalMin</th></tr><tr><td>696</td></tr></table>
+</p>
+  <p>
+    
+  Q6) list the total number of players plays in OL position 
+  <br>
+  A) SELECT COUNT(P.POSITION) AS #ofPosition<br>
+  FROM PLAYERS P, TEAMS T<br>
+  WHERE P.TEAM_ID=T.TEAM_ID AND P.POSITION='OL'<br>
+  <table border="2" align="center">
+    <tr><th>#ofPosition</th></tr><tr><td>19</td></tr></table>
+</p>
+  <p>
+    <i>Write two queries involving join, grouping, row
+      selection and ordering</i>
+      <br>
+
+  Q7)List the average scholarship amount for players and their teams who 
+  born after '01-01-2000'. Order alphabetically. 
+  <br>
+  A) SELECT AVG(P.SCHOLARSHIP) AS AVG_SCHOLARSHIP, T.TEAM_NAME<br>
+  FROM PLAYERS P, TEAMS T<br>
+  WHERE P.TEAM_ID=T.TEAM_ID AND P.BIRTHDAY > '01-01-2000'<br>
+  GROUP BY T.TEAM_NAME<br>
+  ORDER BY T.TEAM_NAME<br>
+  <br>
+  <table border="2" align="center">
+      <tr>
+        <th>AVG_SCHOLARSHIP</th>
+        <th>TEAM_NAME</th>
+      </tr>
+      <tr>
+        <td>48</td>
+        <td>Ege Dolphins</td>
+      </tr>
+      <tr>
+        <td>52</td>
+        <td>Mersin Mustangs</td>
+      </tr>
+      <tr>
+        <td>37</td>
+        <td>Özyegin Wolves</td>
+      </tr>
+      <tr>
+        <td>40</td>
+        <td>Yeditepe Eagles</td>
+      </tr>
+  </table>
+  
+</p>
+  <p>
+
+  Q8) List the team name, team budget, total # of players along with their coaches name except Ege Dolphins.
+  List in ascending order according to team budget
+  <br>
+  A) SELECT COUNT(P.PLAYER_ID) AS Total#Players, T.TEAM_NAME, C.COACH_NAME, T.BUDGET<br>
+  FROM PLAYERS P, TEAMS T, COACHES C <br>
+  WHERE P.TEAM_ID=T.TEAM_ID AND P.TEAM_ID=C.TEAM_ID AND TEAM_NAME!='Ege Dolphins'<br>
+  GROUP BY C.COACH_NAME, T.TEAM_NAME, T.BUDGET<br>
+  ORDER BY T.BUDGET <br>
+  <br>
+  <table border="2" align="center">
+      <tr>
+        <th>Total#Players</th>
+        <th>TEAM_NAME</th>
+        <th>COACH_NAME</th>
+        <th>BUDGET</th>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td>Mersin Mustangs</td>
+        <td>Uluç</td>
+        <td>68000</td>
+      </tr>
+      <tr>
+        <td>23</td>
+        <td>Yeditepe Eagles</td>
+        <td>Onur</td>
+        <td>121000</td>
+      </tr>
+      <tr>
+        <td>22</td>
+        <td>Özyegin Wolves</td>
+        <td>Casey</td>
+        <td>156000</td>
+      </tr>
+  </table>
+  
+</p>
+  <p>
+    <i>Write two queries involving join, grouping and group
+      selection</i>
+      <br>
+
+  Q9) List the team name, total # of players along with their coaches If the team's
+  total number of players is bigger 22
+  <br>
+  A) SELECT COUNT(P.PLAYER_ID) AS Total#Player, T.TEAM_NAME, C.COACH_NAME<br>
+  FROM PLAYERS P, TEAMS T, COACHES C <br>
+  WHERE P.TEAM_ID=T.TEAM_ID AND P.TEAM_ID=C.TEAM_ID<br> 
+  GROUP BY C.COACH_NAME, T.TEAM_NAME<br>
+  HAVING COUNT(P.PLAYER_ID) >  22<br>
+  <br>
+  <table border="2" align="center">
+      <tr>
+        <th>Total#Players</th>
+        <th>TEAM NAME</th>
+        <th>COACH_NAME</th>
+      </tr>
+      <tr>
+        <td>23</td>
+        <td>Yeditepe Eagles</td>
+        <td>Onur</td>
+      </tr>
+  </table>
+  
+</p>
+  <p>
+
+  Q10) List team name, total minute played by players in the team whos players played 
+  more than or equals to 11 hours
+  <br>
+  A) SELECT T.TEAM_NAME, SUM(P.MINUTES_) AS SumMinutes<br>
+  FROM TEAMS T, PLAYERS P<br>
+  WHERE T.TEAM_ID=P.TEAM_ID<br>
+  GROUP BY T.TEAM_NAME<br>
+  HAVING SUM(P.MINUTES_)/60>=11<br>
+  <br>
+  <table border="2" align="center">
+      <tr>
+        <th>TEAM NAME</th>
+        <th>SumMinutes</th>
+      </tr>
+      <tr>
+        <td>Ege Dolphins</td>
+        <td>790</td>
+      </tr>
+      <tr>
+        <td>Mersin Mustangs</td>
+        <td>678</td>
+      </tr>
+      <tr>
+        <td>Yeditepe Eagles</td>
+        <td>696</td>
+      </tr>
+  </table>
+  
+</p>
+  <p>
+    <i>Write a query involving join, grouping, group selection
+      and row selection</i>
+      <br>
+
+  Q11) List the team name and sum of played times for each player if sum of the played 
+  time for the players is more than 300
+  minutes and has more or equal to 50 percent scholarship
+  <br>
+  A) SELECT T.TEAM_NAME, SUM(P.MINUTES_) AS SumMinutes FROM TEAMS T, PLAYERS P<br>
+  WHERE P.TEAM_ID=T.TEAM_ID AND P.SCHOLARSHIP>=50 <br>
+  GROUP BY T.TEAM_NAME<br>
+  HAVING SUM(P.MINUTES_)>300;<br>
+  <table border="2" align="center">
+      <tr>
+        <th>TEAM NAME</th>
+        <th>SumMinutes</th>
+      </tr>
+      <tr>
+        <td>Ege Dolphins</td>
+        <td>464</td>
+      </tr>
+      <tr>
+        <td>Mersin Mustangs</td>
+        <td>366</td>
+      </tr>
+      <tr>
+        <td>Yeditepe Eagles</td>
+        <td>355</td>
+      </tr>
+  </table>
+  
+  <br>
+  </p>
+
+<hr size="5" background-color="black">
+<br>
+
+<table border="1" align="center">
+  <tr>
+    <th colspan="2">Team Members</th>
+  </tr>
+  <tr>
+    <th>Name Surname</th><th>Student Number</th>
+  </tr>
+  <tr>
+    <td>Burak Yavuz</td><td>20200703013</td>
+  </tr>
+  <tr>
+    <td>Murat Can Bayrak</td><td>20180703109</td>
+  </tr>
+  <tr>
+    <td>Umut Piranlıoğlu</td><td>20190703028</td>
+  </tr>
+  <tr> 
+    <td>Arda Özkan</td><td>20190703131</td>
+  </tr> 
+</table>
+
+<a href="#TOP" id="top_link">Go Top</a>
+</body>
+	
